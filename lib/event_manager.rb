@@ -62,6 +62,7 @@ erb_template = ERB.new template_letter
 
 mins = []
 hrs = []
+days = []
 contents.each do |row|
   id = row[0]
   name = row[:first_name]
@@ -75,6 +76,10 @@ contents.each do |row|
   hrs.push(reg_time.split(':')[0].to_i)
   mins.push(reg_time.split(':')[1].to_i)
 
+  reg_day = reg_date.split[0]
+  reg_day = DateTime.strptime(reg_day, '%m/%d/%Y')
+  days.push(reg_day.wday)
+
   form_letter = erb_template.result(binding)
   save_thank_you_letter(id, form_letter)
 end
@@ -82,3 +87,6 @@ end
 avg_hr = hrs.sum(0.0) / hrs.length
 avg_min = mins.sum(0.0) / mins.length
 puts "Peak registration time: #{avg_hr.round}:#{avg_min.round}"
+
+avg_day = days.sum / days.length
+puts "The average day of signup was #{Date::DAYNAMES[avg_day]}."
