@@ -1,0 +1,7 @@
+{
+  "ruby.rubocop.configFilePath": "/home/scouch/.config/.rubocop.yml",
+  "ruby.rubocop.executePath": "/home/scouch/.rbenv/shims/rubocop",
+  "ruby.lint": {
+    "rubocop": true
+  }
+}
