@@ -8,6 +8,19 @@ def clean_zipcode(zipcode)
   zipcode.to_s.rjust(5, '0')[0..4]
 end
 
+def clean_phone_numbers(phone)
+  remove_punc = phone.gsub(/\D/, '')
+  pnums = remove_punc.to_s
+  if (pnums[0] == '1') && (pnums.length == 11)
+    pnums[1..]
+  elsif pnums.length > 11
+    pnums = '0000000000'
+  else
+    pnums = pnums.rjust(10, '0')[0..9]
+  end
+  pnums
+end
+
 def legislators_by_zipcode(zip)
   civic_info = Google::Apis::CivicinfoV2::CivicInfoService.new
   civic_info.key = 'AIzaSyClRzDqDh5MsXwnCWi0kOiiBivP6JsSyBw'
@@ -45,9 +58,9 @@ contents.each do |row|
   id = row[0]
   name = row[:first_name]
   zipcode = clean_zipcode(row[:zipcode])
+  phone_number = clean_phone_numbers(row[:homephone])
   legislators = legislators_by_zipcode(zipcode)
 
   form_letter = erb_template.result(binding)
-
   save_thank_you_letter(id, form_letter)
 end
